@@ -1,0 +1,9 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Class="Play.Views.GanttHeader">
+	<Grid x:Name="grid">
+		<Image Name="image"/>
+		<Canvas Name="canvas"/>
+	</Grid>
+</UserControl>

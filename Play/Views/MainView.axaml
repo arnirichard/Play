@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Play.ViewModels"
+			 xmlns:v="clr-namespace:Play.Views"
+             x:Class="Play.Views.MainView"
+             x:DataType="vm:MainViewModel"
+			 x:Name="mainView">
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+	<UserControl.Resources>
+		<DataTemplate x:Key="ganttTemplate">
+			<v:Gantt StartDate="{Binding StartDate, ElementName=mainView}" 
+					 EndDate="{Binding EndDate, ElementName=mainView}"
+					 Tasks="{Binding Schedule}"
+					 PointerMoved="GanttItem_PointerMoved"/>
+		</DataTemplate>
+		<DataTemplate x:Key="ganttHeaderTemplate">
+			<v:GanttHeader 
+				StartDate="{Binding StartDate, ElementName=mainView}" 
+				EndDate="{Binding EndDate, ElementName=mainView}"
+				VerticalAlignment="Stretch"
+				Height="30"/>
+		</DataTemplate>
+	</UserControl.Resources>
+
+	<Grid>
+		<Popup Name="MyPopup" PlacementMode="Pointer" HorizontalOffset="10">
+			<Border Background="White" BorderBrush="Gray" BorderThickness="1">
+				<TextBlock x:Name="tooltipTextBlock" Text="Mouse over text!" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+			</Border>
+		</Popup>
+
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<DataGrid x:Name="aircraftsDataGrid" AutoGenerateColumns="False" RowHeight="40">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Vehicle"  Binding="{Binding VehicleRegistration}" MinWidth="120"/>
+					<DataGridTextColumn Header="Type"  Binding="{Binding Type.Name}" MinWidth="100"/>
+					<DataGridTemplateColumn Width="*" CellTemplate="{StaticResource ganttTemplate}">
+						<DataGridTemplateColumn.Header>
+							<v:GanttHeader 
+								x:Name="ganttHeader"
+								StartDate="{Binding StartDate, ElementName=mainView}" 
+								EndDate="{Binding EndDate, ElementName=mainView}"
+								VerticalAlignment="Stretch"
+								Height="30"/>
+						</DataGridTemplateColumn.Header>
+					</DataGridTemplateColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+
+			<DataGrid x:Name="crewMembersDataGrid" Grid.Row="1" AutoGenerateColumns="False" RowHeight="40">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Crew Member"  Binding="{Binding Id}" />
+					<DataGridTextColumn Header="Type"  Binding="{Binding Type}"/>
+					<DataGridTemplateColumn Width="*" CellTemplate="{StaticResource ganttTemplate}" 
+											HeaderTemplate="{StaticResource ganttHeaderTemplate}"  />
+				</DataGrid.Columns>
+			</DataGrid>
+
+			<!--<v:GanttHeader 
+				StartDate="{Binding StartDate, ElementName=mainView}" 
+				EndDate="{Binding EndDate, ElementName=mainView}" 
+				Grid.RowSpan="2" 
+				HorizontalAlignment="Right"
+				IsHitTestVisible="false"
+				Width="{Binding Bounds.Width, ElementName=ganttHeader}"
+			/>-->
+		</Grid>
+
+	</Grid>
+</UserControl>
